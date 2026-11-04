@@ -1,0 +1,47 @@
+{
+  "compileType": "miniprogram",
+  "libVersion": "3.17.5",
+  "packOptions": {
+    "ignore": [
+      { "type": "file", "value": "data/README.md" },
+      { "type": "file", "value": "data/map-photo-credits.md" },
+      { "type": "file", "value": "data/scenic-photo-credits.md" },
+      { "type": "file", "value": "RELEASE_CHECKLIST.md" }
+    ],
+    "include": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "coverView": true,
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "enhance": true,
+    "showShadowRootInWxmlPanel": true,
+    "packNpmRelationList": [],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "auto",
+    "tabSize": 2
+  },
+  "appid": "wxca106112f6ccf092",
+  "simulatorPluginLibVersion": {}
+}

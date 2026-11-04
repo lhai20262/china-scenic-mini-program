@@ -1,0 +1,9 @@
+<view class="comment-zone">
+  <view class="ticker">
+    <view wx:if="{{tickerComments.length}}" class="ticker-track"><view class="ticker-group"><view wx:for="{{tickerComments}}" wx:key="index" class="bubble"><text class="bubble-mark">“</text><text>{{item.text}}</text></view></view><view class="ticker-group" aria-hidden="true"><view wx:for="{{tickerComments}}" wx:key="index" class="bubble"><text class="bubble-mark">“</text><text>{{item.text}}</text></view></view></view>
+    <view wx:else class="ticker-empty">还没有评论，写下你对{{spotName}}的印象</view>
+  </view>
+  <view class="comment-bar"><view><text class="comment-title">景区评论</text><text class="comment-count">{{comments.length}} 条 · 仅保存在本机</text></view><view class="comment-button" bindtap="toggleEditor">{{expanded ? '收起' : '写评论'}}</view></view>
+  <view wx:if="{{expanded}}" class="editor"><input maxlength="40" value="{{draft}}" placeholder="最多40字，不会遮挡景区图片" bindinput="inputDraft" confirm-type="send" bindconfirm="submitComment"/><view class="submit" bindtap="submitComment">发送</view></view>
+  <scroll-view wx:if="{{expanded && comments.length}}" class="manage-list" scroll-y="true"><view wx:for="{{comments}}" wx:key="id" class="manage-row"><text>{{item.text}}</text><view data-id="{{item.id}}" bindtap="deleteComment">删除</view></view></scroll-view>
+</view>

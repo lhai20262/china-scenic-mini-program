@@ -1,0 +1,79 @@
+<view class="page">
+  <view wx:if="{{openingVisible}}" class="opening-screen {{openingLeaving ? 'is-leaving' : ''}}" catchtouchmove="stopPreviewTap">
+    <view class="opening-landscape">
+      <view class="opening-sun"></view>
+      <view class="opening-ridge opening-ridge-back"></view>
+      <view class="opening-ridge opening-ridge-front"></view>
+      <view class="opening-mist"></view>
+      <view class="opening-brand"><text class="opening-en">TRAVEL NOTES</text><text class="opening-name">行迹</text><view class="opening-rule"></view><text class="opening-copy">听见山河的声音</text></view>
+    </view>
+    <view class="opening-bottom">
+      <text class="opening-note">山河辽阔 · 此刻出发</text>
+      <view class="opening-action {{openingReady ? 'is-ready' : ''}}">
+        <button class="opening-start" disabled="{{!openingReady || openingLeaving}}" bindtap="enterHome" hover-class="opening-start-pressed"><text>开始</text><text class="opening-arrow">→</text></button>
+      </view>
+    </view>
+  </view>
+  <swiper class="home-swiper" direction="horizontal" duration="280" circular="{{false}}" indicator-dots="{{true}}" indicator-color="rgba(255,255,255,.42)" indicator-active-color="#f3c070" bindchange="changePage" current="{{currentPage}}">
+    <swiper-item>
+      <view class="cover">
+        <view class="sky-glow"></view><view class="mountain mountain-back"></view><view class="mountain mountain-front"></view><view class="mist mist-one"></view><view class="mist mist-two"></view>
+        <view class="topbar"><view class="brand-mark"><view class="brand-sun"></view><view class="brand-line"></view></view><view class="brand-copy"><text class="brand-name">行迹</text><text class="brand-sub">TRAVEL NOTES</text></view><view class="top-location"><text class="location-dot">●</text> 中国 · 旅行中</view></view>
+        <view class="hero"><view class="eyebrow"><text class="eyebrow-line"></text> 听见山河的声音</view><view class="hero-title">一场关于<br/><text>中国风景</text>的漫游</view><view class="hero-desc">从山川湖海到古城烟火，<br/>让每一处风景，都有自己的故事。</view><view class="hero-actions"><view class="primary-btn" bindtap="startExplore"><text>浏览全部景点</text><text class="arrow">↓</text></view><view class="secondary-btn" bindtap="openTravel"><text class="play">♡</text>旅行中心</view></view><view class="nearby-link" bindtap="openNearby">⌖ 查看附近景区</view></view>
+        <view class="stats-card"><view class="stat"><text class="stat-number">34</text><text class="stat-label">省级目的地</text></view><view class="divider"></view><view class="stat"><text class="stat-number monthly-grade">{{monthlyGrade}} 景区</text><text class="stat-label">当月推荐游玩</text></view><view class="divider"></view><view class="stat"><text class="stat-number">1200+</text><text class="stat-label">精选路线</text></view></view>
+        <view class="bottom-note"><text class="note-icon">✦</text> 今日推荐 · 安徽黄山</view>
+        <view class="swipe-hint">向左滑动 · 点亮你的中国足迹 <text>→</text></view>
+      </view>
+    </swiper-item>
+    <swiper-item>
+      <view class="map-page">
+        <scroll-view class="map-scroll" scroll-y="true" enhanced="true" show-scrollbar="false">
+          <view class="map-header"><view><text class="map-kicker">TRAVEL FOOTPRINT</text><text class="map-title">点亮中国景区</text></view><view class="map-progress {{litCountBump ? 'is-bump' : ''}}"><text>{{litCount}}</text><text> 已点亮</text></view></view>
+          <view class="map-copy">收录全国 5A、4A、3A 景区，搜索后点亮你的足迹</view>
+          <view class="china-map">
+            <view class="map-grain"></view>
+            <view wx:for="{{mapSpots}}" wx:key="name" class="map-pin {{item.lit ? 'is-lit' : ''}} {{justLitId === item.id ? 'just-lit' : ''}}" style="left: {{item.left}}%; top: {{item.top}}%;" data-id="{{item.id}}" bindtap="openMapPreview">
+              <view class="pin-core"></view><view class="pin-ring"></view><text class="pin-name">{{item.name}}</text>
+            </view>
+            <view class="map-caption">CHINA</view>
+          </view>
+          <view class="map-footer"><text>代表景区快捷点亮</text><text>向右滑动返回 <text>←</text></text></view>
+          <view class="footprint-bar" bindtap="toggleFootprints"><view><text class="footprint-bar-title">我的足迹</text><text class="footprint-bar-sub">{{litCount ? '已到访 ' + litCount + ' 处景区' : '从点亮第一处景区开始'}}</text></view><text class="footprint-bar-arrow {{footprintsOpen ? 'open' : ''}}">⌄</text></view>
+          <view wx:if="{{footprintsOpen}}" class="footprint-panel">
+            <view wx:if="{{footprintProvinces.length}}" class="footprint-provinces"><view wx:for="{{footprintProvinces}}" wx:key="name" class="footprint-province"><text>{{item.name}}</text><text>{{item.count}}</text></view></view>
+            <scroll-view wx:if="{{footprints.length}}" class="footprint-list" scroll-y="true" bindscrolltolower="loadMoreFootprints"><view wx:for="{{footprints}}" wx:key="id" class="footprint-row"><view class="footprint-dot">✓</view><view class="footprint-copy"><text>{{item.name}}</text><text>{{item.province}}{{item.city ? ' · ' + item.city : ''}}</text><picker mode="date" value="{{item.visitDate === '此前点亮' ? today : item.visitDate}}" end="{{today}}" data-id="{{item.id}}" bindchange="changeVisitDate"><text class="footprint-date">到访日期：{{item.visitDate}} · 修改</text></picker></view><view class="footprint-cancel" data-id="{{item.id}}" catchtap="cancelFootprint">取消</view></view><view wx:if="{{hasMoreFootprints}}" class="load-more" bindtap="loadMoreFootprints">查看更多足迹 ↓</view></scroll-view>
+            <view wx:else class="footprint-empty">还没有足迹，去点亮一处喜欢的景区吧</view>
+          </view>
+          <view class="all-spots"><text class="all-spots-title">全国景区名录</text><view class="all-spots-count"><text class="all-spots-number">{{resultCount}}</text><text class="all-spots-unit">处</text></view></view>
+          <view class="map-search"><text>⌕</text><input value="{{mapKeyword}}" placeholder="搜索景区、城市或省份" bindinput="onMapSearch"/><text wx:if="{{mapKeyword}}" bindtap="clearMapSearch">×</text></view>
+          <scroll-view class="map-filter-scroll" scroll-x="true" show-scrollbar="false"><view class="map-filter-list"><view wx:for="{{grades}}" wx:key="*this" class="map-filter {{activeGrade === item ? 'active' : ''}}" data-value="{{item}}" bindtap="selectMapGrade">{{item === '全部' ? '全部等级' : item}}</view></view></scroll-view>
+          <scroll-view class="map-filter-scroll" scroll-x="true" show-scrollbar="false"><view class="map-filter-list"><view wx:for="{{provinces}}" wx:key="*this" class="map-filter province-filter {{activeProvince === item ? 'active' : ''}}" data-value="{{item}}" bindtap="selectMapProvince">{{item}}</view></view></scroll-view>
+          <view class="attraction-list"><view wx:for="{{visibleAttractions}}" wx:key="id" class="attraction-row {{justLitId === item.id ? 'just-lit' : ''}}" data-id="{{item.id}}" bindtap="openListedPreview"><view class="attraction-grade">{{item.grade}}</view><view class="attraction-copy"><text>{{item.name}}</text><text>{{item.province}}{{item.city ? ' · ' + item.city : ''}}</text></view><view class="light-button {{item.lit ? 'is-lit' : ''}}" data-id="{{item.id}}" catchtap="handleListedAction">{{item.lit ? '取消点亮' : '点亮'}}</view></view></view>
+          <view wx:if="{{hasMoreAttractions}}" class="load-more" bindtap="loadMoreAttractions">加载更多景区 ↓</view>
+          <view wx:elif="{{resultCount}}" class="list-end">已展示全部 {{resultCount}} 处</view>
+          <view wx:else class="list-empty">未找到匹配景区</view>
+        </scroll-view>
+      </view>
+    </swiper-item>
+  </swiper>
+  <view wx:if="{{mapPreview}}" class="preview-mask" bindtap="closeMapPreview">
+    <view class="preview-sheet" catchtap="stopPreviewTap">
+      <view class="preview-handle"></view>
+      <view class="preview-head"><view><text class="preview-kicker">{{mapPreview.province}} · {{mapPreview.grade || '代表景区'}}</text><text class="preview-title">{{mapPreview.name}}</text></view><text class="preview-close" bindtap="closeMapPreview">×</text></view>
+      <view wx:if="{{mapPreview.images.length}}" class="preview-gallery"><view wx:for="{{mapPreview.images}}" wx:key="src" class="preview-photo {{mapPreview.images.length === 1 ? 'is-single' : ''}}"><view class="preview-media"><view wx:if="{{!item.loaded && !item.error}}" class="preview-loading"><view></view><text>图片加载中</text></view><image wx:if="{{!item.error}}" class="{{item.loaded ? 'is-loaded' : ''}}" src="{{item.src}}" mode="aspectFill" data-index="{{index}}" data-spot-id="{{mapPreview.id}}" bindload="onPreviewImageLoaded" binderror="onPreviewImageError"/><view wx:else class="preview-error"><text>图片加载失败</text><view data-index="{{index}}" bindtap="retryPreviewImage">重新加载</view></view></view><text class="preview-caption">{{item.title}}</text><text class="preview-credit">{{item.credit}} · Wikimedia Commons</text><text wx:if="{{item.sourceUrl}}" class="preview-source" data-index="{{index}}" bindtap="showPhotoSource">图片来源与许可 ↗</text></view></view>
+      <view wx:else class="preview-missing"><view class="preview-missing-mark">{{mapPreview.photoSearching ? '◌' : '⌁'}}</view><text>{{mapPreview.photoSearching ? '正在查找该景区图片' : '暂未找到该景区图片'}}</text><text>{{mapPreview.photoSearching ? '图片加载完成后显示点亮按钮' : '你仍可以继续点亮这处景区'}}</text></view>
+      <view wx:if="{{previewCelebrating}}" class="preview-celebrate"><text>✦</text><text>足迹已点亮</text><text>✦</text></view>
+      <view class="preview-action {{previewReady ? 'is-ready' : ''}}"><view class="preview-light {{mapPreview.lit ? 'is-lit' : ''}}" bindtap="lightPreviewSpot">{{mapPreview.lit ? '取消点亮' : '点亮这处景区'}}</view></view>
+    </view>
+  </view>
+  <view wx:if="{{onboardingVisible}}" class="onboarding-mask" catchtouchmove="stopPreviewTap">
+    <view class="onboarding-card">
+      <view class="onboarding-top"><text>首次使用</text><text bindtap="finishOnboarding">跳过</text></view>
+      <view class="onboarding-index">{{onboardingSteps[onboardingStep].index}}</view>
+      <text class="onboarding-title">{{onboardingSteps[onboardingStep].title}}</text>
+      <text class="onboarding-text">{{onboardingSteps[onboardingStep].text}}</text>
+      <view class="onboarding-dots"><view wx:for="{{onboardingSteps}}" wx:key="index" class="{{onboardingStep === index ? 'active' : ''}}"></view></view>
+      <view class="onboarding-next" bindtap="nextOnboarding">{{onboardingStep === onboardingSteps.length - 1 ? '开始探索' : '下一步'}}</view>
+    </view>
+  </view>
+</view>

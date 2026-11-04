@@ -1,0 +1,7 @@
+<view class="page motion-page">
+  <view class="header"><view class="back" bindtap="goBack">‹</view><view><text class="eyebrow">NEARBY</text><text class="title">附近景区</text></view><text class="brand">行迹</text></view>
+  <view class="location-card"><view><text class="location-title">{{locationLabel}}</text><text class="location-note">距离按省级中心点估算，仅供旅行规划参考</text></view><view class="locate" bindtap="locate">{{locating ? '定位中' : '重新定位'}}</view></view>
+  <view wx:if="{{denied}}" class="permission"><text>无法获取位置，请允许位置权限后重试。</text><view bindtap="openSettings">打开设置</view></view>
+  <view class="section-head"><text>由近到远</text><text>{{nearby.length}} 个代表目的地</text></view>
+  <view class="list"><view wx:for="{{nearby}}" wx:key="id" class="row" data-id="{{item.id}}" bindtap="openDetail"><view class="rank">{{index + 1}}</view><view class="copy"><text>{{item.name}}</text><text>{{item.province}}{{item.city ? ' · ' + item.city : ''}} · {{item.grade}}</text></view><view class="distance">约 {{item.distance}} km<text>›</text></view></view></view>
+</view>

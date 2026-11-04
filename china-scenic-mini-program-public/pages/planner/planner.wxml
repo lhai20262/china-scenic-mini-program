@@ -1,0 +1,25 @@
+<view class="page motion-page">
+  <view class="header"><view class="back" bindtap="goBack">‹</view><view><text class="eyebrow">TRAVEL TOOLS</text><text class="title">旅行工具</text></view><text class="brand">行迹</text></view>
+  <scroll-view class="modes" scroll-x="true"><view class="mode-list"><view wx:for="{{modes}}" wx:key="*this" class="mode {{mode === item ? 'active' : ''}}" data-mode="{{item}}" bindtap="selectMode">{{item}}</view></view></scroll-view>
+  <block wx:if="{{mode === '日历'}}">
+    <view class="intro"><text>旅行日历</text><text>为游览清单安排具体日期</text></view>
+    <view wx:if="{{plans.length}}" class="list"><view wx:for="{{plans}}" wx:key="id" class="calendar-row" data-id="{{item.id}}" bindtap="openDetail"><view class="date"><text>{{item.planMonth}}月</text><text>{{item.planDay}}</text></view><view class="copy"><text>{{item.name}}</text><text>{{item.province}} · {{item.duration}}</text></view><picker mode="date" value="{{item.planDate}}" start="{{today}}" data-id="{{item.id}}" catchtap="stopTap" bindchange="changePlanDate"><view class="edit">改期</view></picker></view></view>
+    <view wx:else class="empty">游览清单还是空的<text>先在景区详情页加入想去的景区</text></view>
+  </block>
+  <block wx:elif="{{mode === '自动行程'}}">
+    <view class="intro"><text>自动生成行程</text><text>选择范围、天数和偏好</text></view>
+    <view class="form"><picker range="{{provinces}}" value="{{provinceIndex}}" bindchange="chooseProvince"><view><text>目的地</text><text>{{provinces[provinceIndex]}} ›</text></view></picker><picker range="{{days}}" value="{{dayIndex}}" bindchange="chooseDays"><view><text>游玩天数</text><text>{{days[dayIndex]}} ›</text></view></picker><picker range="{{preferences}}" value="{{preferenceIndex}}" bindchange="choosePreference"><view><text>旅行偏好</text><text>{{preferences[preferenceIndex]}} ›</text></view></picker><view class="generate" bindtap="generateItinerary">生成行程</view></view>
+    <view wx:for="{{itinerary}}" wx:key="day" class="day-card"><view class="day-title">第 {{item.day}} 天</view><view wx:for="{{item.spots}}" wx:for-item="spot" wx:key="id" class="itinerary-row" data-id="{{spot.id}}" bindtap="openDetail"><view class="time">{{index === 0 ? '上午' : '下午'}}</view><view><text>{{spot.name}}</text><text>{{spot.province}}{{spot.city ? ' · ' + spot.city : ''}}</text></view><text>›</text></view></view>
+  </block>
+  <block wx:elif="{{mode === '时间轴'}}">
+    <view class="intro"><text>足迹时间轴</text><text>按到访日期回看旅行记录</text></view>
+    <view wx:if="{{timeline.length}}" class="timeline"><view wx:for="{{timeline}}" wx:key="id" class="timeline-row" data-id="{{item.id}}" bindtap="openDetail"><view class="timeline-mark"></view><view class="timeline-copy"><text>{{item.visitDate}}</text><text>{{item.name}}</text><text>{{item.province}} · {{item.rating ? item.rating + '星' : '尚未评分'}}{{item.note ? ' · ' + item.note : ''}}</text></view></view></view>
+    <view wx:else class="empty">还没有旅行足迹<text>点亮景区后会自动出现在这里</text></view>
+  </block>
+  <block wx:else>
+    <view class="intro"><text>随机目的地</text><text>把下一站交给一点偶然</text></view>
+    <scroll-view class="grade-scroll" scroll-x="true"><view class="grade-list"><view wx:for="{{randomGrades}}" wx:key="*this" class="grade {{randomGrade === item ? 'active' : ''}}" data-grade="{{item}}" bindtap="selectRandomGrade">{{item}}</view></view></scroll-view>
+    <view class="random-button" bindtap="randomize">随机推荐一处景区</view>
+    <view wx:if="{{randomSpot}}" class="random-card" data-id="{{randomSpot.id}}" bindtap="openDetail"><image wx:if="{{randomSpot.cover}}" src="{{randomSpot.cover}}" mode="aspectFill"/><view class="random-shade"></view><view class="random-copy"><text>{{randomSpot.grade}} · {{randomSpot.province}}</text><text>{{randomSpot.name}}</text><text>{{randomSpot.theme}} · 建议游玩 {{randomSpot.duration}}</text></view></view>
+  </block>
+</view>

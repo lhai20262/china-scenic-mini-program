@@ -1,0 +1,39 @@
+<view class="page motion-page">
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">‹</view>
+    <view><text class="eyebrow">CHINA · TRAVEL NOTES</text><text class="title">开始探索</text></view>
+    <view class="header-mark">行迹</view>
+  </view>
+  <view class="intro"><text>去听见</text><text class="accent">每一处风景</text><text>的故事</text><view class="intro-line"></view></view>
+  <view class="search" bindtap="openSearch"><text class="search-icon">⌕</text><text style="flex:1;font-size:25rpx;color:#938d80;">搜索全国 5A / 4A / 3A 景区或城市</text><text class="clear">↗</text></view>
+  <view class="tools"><view bindtap="openTravel"><text>♡</text><text>收藏与清单</text></view><view bindtap="openNearby"><text>⌖</text><text>附近景区</text></view></view>
+  <scroll-view class="filter-row" scroll-x="true" enhanced="true" show-scrollbar="false"><view class="filter-list"><view wx:for="{{regions}}" wx:key="*this" class="filter {{activeRegion === item ? 'active' : ''}}" data-value="{{item}}" bindtap="selectRegionAndUpdate">{{item}}</view></view></scroll-view>
+  <view class="section-head"><view><text class="section-title">精选景区</text><text class="section-sub">为你准备了一段旅程</text></view><text class="count">{{filteredSpots.length}} 个目的地</text></view>
+  <scroll-view class="theme-row" scroll-x="true" show-scrollbar="false"><view class="theme-list"><view wx:for="{{themes}}" wx:key="*this" class="theme {{activeTheme === item ? 'active' : ''}}" data-value="{{item}}" bindtap="selectThemeAndUpdate">{{item}}</view></view></scroll-view>
+  <scroll-view class="spot-list" scroll-y="true">
+    <block wx:if="{{filteredSpots.length > 0}}">
+      <block wx:for="{{filteredSpots}}" wx:key="name">
+        <view class="spot" data-name="{{item.name}}" bindtap="openSpot">
+          <view class="spot-art {{item.color}}">
+            <text class="spot-index">{{item.index}}</text>
+            <text class="spot-stamp">{{item.tag}}</text>
+            <view class="art-sun"></view>
+            <view class="art-mountain one"></view>
+            <view class="art-mountain two"></view>
+          </view>
+          <view class="spot-copy">
+            <view class="spot-name">{{item.name}}</view>
+            <view class="spot-city">{{item.city}}</view>
+            <view class="spot-desc">{{item.desc}}</view>
+            <view class="spot-link">查看景区详情 <text>↗</text></view>
+          </view>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="empty">
+      <text class="empty-icon">⌕</text>
+      <text>还没有找到这处风景</text>
+      <text class="empty-sub">换个关键词或筛选条件试试</text>
+    </view>
+  </scroll-view>
+</view>

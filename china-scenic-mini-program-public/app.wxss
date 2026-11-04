@@ -1,0 +1,61 @@
+page { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif; }
+view, text { box-sizing: border-box; }
+
+.motion-page { animation: pageAppleIn .72s cubic-bezier(.22,1,.36,1) both; transform-origin:50% 50%; }
+.motion-page > .header { animation: headDropIn .62s cubic-bezier(.16,1,.3,1) both; }
+.motion-page > .hero { animation: heroReveal .88s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .quick-actions { animation: contentRise .66s .12s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .summary { animation: contentRise .66s .08s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .progress { animation: contentRise .68s .16s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .intro { animation: contentRise .64s .08s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .form { animation: contentRise .68s .18s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .timeline { animation: contentRise .68s .12s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .section,
+.motion-page .card,
+.motion-page .spot,
+.motion-page .row,
+.motion-page .route-card,
+.motion-page .day-card,
+.motion-page .random-card { animation: cardArrive .72s cubic-bezier(.16,1,.3,1) both; will-change:transform,opacity; }
+.motion-page .card:nth-child(2),
+.motion-page .spot:nth-child(2),
+.motion-page .row:nth-child(2),
+.motion-page .route-card:nth-child(2),
+.motion-page .day-card:nth-child(2) { animation-delay:.07s; }
+.motion-page .card:nth-child(3),
+.motion-page .spot:nth-child(3),
+.motion-page .row:nth-child(3),
+.motion-page .route-card:nth-child(3),
+.motion-page .day-card:nth-child(3) { animation-delay:.14s; }
+.motion-page .section:nth-of-type(2) { animation-delay:.14s; }
+.motion-page .section:nth-of-type(3) { animation-delay:.22s; }
+.motion-page .section:nth-of-type(4) { animation-delay:.3s; }
+.motion-page .section:nth-of-type(5) { animation-delay:.38s; }
+.motion-page .route-row { animation:routeStepIn .48s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .route-row:nth-child(2) { animation-delay:.08s; }
+.motion-page .route-row:nth-child(3) { animation-delay:.16s; }
+.motion-page .route-row:nth-child(4) { animation-delay:.24s; }
+.motion-page .route-index { animation:routeNodeIn .5s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .section-title { animation:titleSettle .6s .1s cubic-bezier(.16,1,.3,1) both; }
+.motion-page .tool-grid > view { transition:transform .32s cubic-bezier(.2,.8,.2,1),background-color .32s ease; }
+.motion-page .tool-grid > view:active { transform:translateY(3rpx) scale(.97); background:#edf3ef; }
+.motion-page .header, .motion-page .search, .motion-page .location-card, .motion-page .tabs, .motion-page .filter-row, .motion-page .section-head { animation:appleSlideIn .6s cubic-bezier(.22,1,.36,1) both; }
+.motion-page .header { animation-delay:.03s; }
+.motion-page .search { animation-delay:.1s; }
+.motion-page .location-card,.motion-page .tabs { animation-delay:.12s; }
+.motion-page .filter-row { animation-delay:.16s; }
+.motion-page .section-head { animation-delay:.2s; }
+
+@keyframes pageFadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes pageAppleIn { 0% { opacity:.72; transform:scale(1.02); clip-path:inset(0 0 0 0); filter:blur(2px); } 34% { opacity:.92; transform:scale(.94); clip-path:inset(42% 42% 42% 42%); filter:blur(5px); } 54% { opacity:1; transform:scale(.96); clip-path:inset(37% 37% 37% 37%); filter:blur(2px); } 100% { opacity:1; transform:scale(1); clip-path:inset(0 0 0 0); filter:blur(0); } }
+@keyframes appleSlideIn { from { opacity:0; transform:translate3d(0,22rpx,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+@keyframes headDropIn { 0% { opacity:0; transform:translate3d(0,-28rpx,0); } 72% { opacity:1; transform:translate3d(0,3rpx,0); } 100% { opacity:1; transform:translate3d(0,0,0); } }
+@keyframes heroReveal { 0% { opacity:.6; transform:scale(1.045); } 65% { opacity:1; transform:scale(.995); } 100% { opacity:1; transform:scale(1); } }
+@keyframes contentRise { 0% { opacity:0; transform:translate3d(0,34rpx,0); } 72% { opacity:1; transform:translate3d(0,-2rpx,0); } 100% { opacity:1; transform:translate3d(0,0,0); } }
+@keyframes cardArrive { 0% { opacity:0; transform:translate3d(0,42rpx,0) scale(.965); } 68% { opacity:1; transform:translate3d(0,-3rpx,0) scale(1.008); } 100% { opacity:1; transform:translate3d(0,0,0) scale(1); } }
+@keyframes routeStepIn { from { opacity:0; transform:translate3d(18rpx,8rpx,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+@keyframes routeNodeIn { 0% { transform:scale(.55); } 72% { transform:scale(1.12); } 100% { transform:scale(1); } }
+@keyframes titleSettle { from { opacity:.55; transform:translate3d(0,12rpx,0); } to { opacity:1; transform:translate3d(0,0,0); } }
+
+/* 微信基础库对 prefers-reduced-motion 媒体查询支持不一致；
+   动效保持在普通选择器中，避免整份全局 WXSS 被旧版编译器丢弃。 */
